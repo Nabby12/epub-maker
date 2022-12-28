@@ -1,0 +1,2 @@
+run:
+	./scripts/build.sh
