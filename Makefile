@@ -1,5 +1,3 @@
-include .env
-
 # epub生成
 run: check set-env
 	./scripts/build.sh
