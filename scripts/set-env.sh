@@ -42,6 +42,7 @@ echo -e "PUBLISHER: ${start_green}${input_publisher}${end_green}"
 echo -e "\n"
 
 read -p "Is input value ok? [y/N] " answer
+answer=${answer:-n}
 if [ "$answer" != "y" ]; then
   echo -e "${start_red}env values is not ok.${end_red}"
   exit 1
