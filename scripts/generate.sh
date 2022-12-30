@@ -19,6 +19,7 @@ meta_series="\<meta content\=\"${SERIES}\" name\=\"calibre\:series\" \/\>"
 meta_series_count="\<meta content\=\"${SERIES_COUNT}\" name\=\"calibre:series_index\" \/\>"
 
 sed -i -e "s/\[IMAGE_EXTENSION\]/${IMAGE_EXTENSION}/g" ${OEBPS_DIR}/content.opf
+sed -i -e "s/\[IMAGE_EXTENSION_FOR_MEDIATYPE\]/${IMAGE_EXTENSION_FOR_MEDIATYPE}/g" ${OEBPS_DIR}/content.opf
 sed -i -e "s/<dc:identifier\s*.*/${dc_book_id_identifier}/" ${OEBPS_DIR}/content.opf
 sed -i -e "s/<dc:publisher\s*.*/${dc_publisher}/" ${OEBPS_DIR}/content.opf
 sed -i -e "s/<dc:creator\s*.*/${dc_creator}/" ${OEBPS_DIR}/content.opf
