@@ -45,6 +45,28 @@ mkdir -p "${ASSET_DIR}/${BOOK_TITLE_DIRECTORY}"
 find ${ASSET_DIR} -maxdepth 1 -name "*.${IMAGE_EXTENSION}" | xargs -I{} mv -f {} "${ASSET_DIR}/${BOOK_TITLE_DIRECTORY}/"
 echo -e "${start_yellow}==========> processing done.${end_yellow}"
 
+# 画像圧縮
+echo -e "\n"
+echo -e "${start_yellow}==========> compressing images...${end_yellow}"
+extension_jpg="jpg"
+extension_png="png"
+case "$IMAGE_EXTENSION" in
+  $extension_jpg)
+    # 対象フォルダのjpgファイル一括圧縮コマンド
+    find ${EPUB_IMAGE_DIR} -name "*.${extension_jpg}" -print \
+      | xargs jpegoptim --all-progressive --strip-all --max=40
+    ;;
+  $extension_png)
+    # 対象フォルダのpngファイル一括圧縮コマンド
+    find ${EPUB_IMAGE_DIR} -name "*.${extension_png}" -print \
+      | xargs -I{} pngquant --force --ext ".${extension_png}" {} --quality=40-50 --speed 1 --skip-if-larger --verbose
+    ;;
+  *)
+    echo "compressing image not found."
+    ;;
+esac
+echo -e "${start_yellow}==========> compressing done.${end_yellow}"
+
 # ページ生成
 echo -e "\n"
 echo -e "${start_yellow}==========> generating pages...${end_yellow}"
@@ -55,7 +77,7 @@ echo -e "${start_yellow}==========> generating done.${end_yellow}"
 echo -e "\n"
 echo -e "${start_yellow}==========> exporting epub file...${end_yellow}"
 ## epubファイル出力フォルダを生成
-rm -rf ${OUTPUT_DIR}
+rm -f "${OUTPUT_DIR}/${BOOK_TITLE}.epub"
 mkdir -p ${OUTPUT_DIR}
 
 ## epub生成
