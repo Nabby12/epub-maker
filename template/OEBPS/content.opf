@@ -19,7 +19,7 @@
 
         <item id="coverImage" href="Images/cover.[IMAGE_EXTENSION]" media-type="image/[IMAGE_EXTENSION_FOR_MEDIATYPE]" />
         <item id="cover" href="Text/cover.xhtml" media-type="application/xhtml+xml" />
-        <item id="image0001" href="Images/page0001.[IMAGE_EXTENSION]" media-type="[IMAGE_EXTENSION_FOR_MEDIATYPE]"/>
+        <item id="image0001" href="Images/page0001.[IMAGE_EXTENSION]" media-type="image/[IMAGE_EXTENSION_FOR_MEDIATYPE]"/>
         <item id="page0001" href="Text/page0001.xhtml" media-type="application/xhtml+xml"/>
     </manifest>
 
