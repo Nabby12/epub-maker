@@ -33,13 +33,16 @@ cp template/OEBPS/content.opf ${OEBPS_DIR}/content.opf
 cp template/OEBPS/Styles/style.css ${EPUB_STYLE_DIR}/style.css
 cp template/OEBPS/Text/cover.xhtml ${EPUB_TEXT_DIR}/cover.xhtml
 cp template/OEBPS/Text/nav.xhtml ${EPUB_TEXT_DIR}/nav.xhtml
-cp ${ASSET_DIR}/cover.jpg ${EPUB_IMAGE_DIR}/cover.jpg
+cp ${ASSET_DIR}/cover.${IMAGE_EXTENSION} ${EPUB_IMAGE_DIR}/cover.${IMAGE_EXTENSION}
 echo -e "${start_yellow}==========> setting done.${end_yellow}"
 
 # 画像修正（リサイズ・トリミング・名前変更）
 echo -e "\n"
 echo -e "${start_yellow}==========> processing images...${end_yellow}"
 node src/trim_and_rename.js
+# 元の画像を別フォルダに退避
+mkdir -p "${ASSET_DIR}/${BOOK_TITLE}"
+find ${ASSET_DIR} -maxdepth 1 -name "*.${IMAGE_EXTENSION}" | xargs -I{} mv -f {} "${ASSET_DIR}/${BOOK_TITLE}/"
 echo -e "${start_yellow}==========> processing done.${end_yellow}"
 
 # ページ生成

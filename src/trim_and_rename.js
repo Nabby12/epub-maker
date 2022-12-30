@@ -8,6 +8,8 @@ dotenvExpand.expand(myEnv)
 
 const assetsDir = process.env.ASSET_DIR
 const outputsDir = process.env.EPUB_IMAGE_DIR
+const imageExtension = process.env.IMAGE_EXTENSION
+const bookTitle = process.env.BOOK_TITLE
 
 const stdout = execSync(`ls ${assetsDir}`)
 const fileList = stdout.toString().split('\n')
@@ -21,11 +23,11 @@ const width = parseInt(process.env.IMAGE_WIDTH, 10)
 const height = parseInt(process.env.IMAGE_HEIGHT, 10)
 
 fileList.forEach((data) => {
-  if (data.endsWith('.jpg') && !data.endsWith('cover.jpg')) {
+  if (data.endsWith(`.${imageExtension}`) && !data.endsWith(`cover.${imageExtension}`)) {
     const input = `${assetsDir}/${data}`
-    const filename = input.replace('.jpg', '')
     const targetNumber = ('0000' + (startNumber + count)).slice(-4)
-    const output = `${outputsDir}/${input.replace(filename, 'page' + targetNumber)}`
+    const outputFileName = `page${targetNumber}.${imageExtension}`
+    const output = `${outputsDir}/${outputFileName}`
 
     sharp(input)
       .resize({
@@ -41,7 +43,7 @@ fileList.forEach((data) => {
       })
       .toFile(output)
       .then(() => {
-        console.log(`triming '${output}' succeeded.`)
+        console.log(`triming '${outputFileName}' succeeded.`)
       })
 
     count++

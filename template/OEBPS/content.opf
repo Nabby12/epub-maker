@@ -17,9 +17,9 @@
         <item id="style.css" href="Styles/style.css" media-type="text/css"/>
         <item id="nav" href="Text/nav.xhtml" properties="nav" media-type="application/xhtml+xml" />
 
-        <item id="coverImage" href="Images/cover.jpg" media-type="image/jpeg" />
+        <item id="coverImage" href="Images/cover.[IMAGE_EXTENSION]" media-type="image/[IMAGE_EXTENSION_FOR_MEDIATYPE]" />
         <item id="cover" href="Text/cover.xhtml" media-type="application/xhtml+xml" />
-        <item id="image0001" href="Images/page0001.jpg" media-type="image/jpeg"/>
+        <item id="image0001" href="Images/page0001.[IMAGE_EXTENSION]" media-type="image/[IMAGE_EXTENSION_FOR_MEDIATYPE]"/>
         <item id="page0001" href="Text/page0001.xhtml" media-type="application/xhtml+xml"/>
     </manifest>
 
