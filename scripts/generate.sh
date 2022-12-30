@@ -28,29 +28,32 @@ sed -i -e "s/<meta content=.*calibre:series_index.*/${meta_series_count}/" ${OEB
 
 # page向けxml修正・生成
 book_title_string="<title>${BOOK_TITLE}<\/title>"
-for file in $(find ${EPUB_IMAGE_DIR} -name '*.jpg'); do
+sorted_files_list=$(find ${EPUB_IMAGE_DIR} -name '*.jpg' | sort)
+for file in ${sorted_files_list}; do
   image_file=$(basename "${file}")
-  page_number=$(echo ${image_file} | grep -o '[0-9]*')
+  page_number_string=$(echo ${image_file} | grep -o '[0-9]*')
+  page_number=$(sed 's/^0*//' <<<${page_number_string})
   if [ -n "$page_number" ]; then
-    if ! [ "$page_number" = "0001" ]; then
+    if [ "$page_number" -gt 1 ]; then
+      # 一つ前のページ数を取得
       previous_number=$((${page_number} - 1))
       previous_number=$(printf "%04d" ${previous_number})
 
       # content.opfにページ情報追加
       # itemタグ追加
       search_string_item="<item id\=\"page${previous_number}\""
-      item_jpg_string="\t\t<item id\=\"image${page_number}\" href\=\"Images\/page${page_number}.jpg\" media-type\=\"image\/jpeg\"\/\>"
-      item_xhtml_string="\t\t<item id\=\"page${page_number}\" href\=\"Text\/page${page_number}.xhtml\" media-type\=\"application\/xhtml\+xml\"\/\>"
+      item_jpg_string="\t\t<item id\=\"image${page_number_string}\" href\=\"Images\/page${page_number_string}.jpg\" media-type\=\"image\/jpeg\"\/\>"
+      item_xhtml_string="\t\t<item id\=\"page${page_number_string}\" href\=\"Text\/page${page_number_string}.xhtml\" media-type\=\"application\/xhtml\+xml\"\/\>"
       sed -i -e "/${search_string_item}/a \\${item_jpg_string}\n${item_xhtml_string}" ${OEBPS_DIR}/content.opf
 
       # itemrefタグ追加
       search_string_itemref="<itemref idref\=\"page${previous_number}\" \/>"
-      itemref_string="\t\t<itemref idref\=\"page${page_number}\" \/>"
+      itemref_string="\t\t<itemref idref\=\"page${page_number_string}\" \/>"
       sed -i -e "/${search_string_itemref}/a \\${itemref_string}" ${OEBPS_DIR}/content.opf
     fi
 
     # xhtmlファイル生成（xhtmlはpage0001も処理が必要なのでif文の外で処理を実行）
-    target_page_xhtml_file=${EPUB_TEXT_DIR}/page${page_number}.xhtml
+    target_page_xhtml_file=${EPUB_TEXT_DIR}/page${page_number_string}.xhtml
     cp template/OEBPS/Text/page.xhtml ${target_page_xhtml_file}
 
     sed -i -e "s/<title>*.*/${book_title_string}/" ${target_page_xhtml_file}
@@ -59,7 +62,7 @@ for file in $(find ${EPUB_IMAGE_DIR} -name '*.jpg'); do
     sed -i -e "s/\[EPUB_PAGE_WIDTH\]/${EPUB_PAGE_WIDTH}/" ${target_page_xhtml_file}
     sed -i -e "s/\[EPUB_PAGE_HEIGHT\]/${EPUB_PAGE_HEIGHT}/" ${target_page_xhtml_file}
   fi
-done | sort
+done
 
 # cover.xhtml, nav.xhtml修正
 target_cover_xhtml_file=${EPUB_TEXT_DIR}/cover.xhtml
