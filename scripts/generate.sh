@@ -18,6 +18,7 @@ dc_date="\<dc\:date opf\:event\=\"modification\" xmlns\:opf\=\"http\:\/\/www.idp
 meta_series="\<meta content\=\"${SERIES}\" name\=\"calibre\:series\" \/\>"
 meta_series_count="\<meta content\=\"${SERIES_COUNT}\" name\=\"calibre:series_index\" \/\>"
 
+sed -i -e "s/\[IMAGE_EXTENSION\]/${IMAGE_EXTENSION}/g" ${OEBPS_DIR}/content.opf
 sed -i -e "s/<dc:identifier\s*.*/${dc_book_id_identifier}/" ${OEBPS_DIR}/content.opf
 sed -i -e "s/<dc:publisher\s*.*/${dc_publisher}/" ${OEBPS_DIR}/content.opf
 sed -i -e "s/<dc:creator\s*.*/${dc_creator}/" ${OEBPS_DIR}/content.opf
@@ -28,7 +29,7 @@ sed -i -e "s/<meta content=.*calibre:series_index.*/${meta_series_count}/" ${OEB
 
 # page向けxml修正・生成
 book_title_string="<title>${BOOK_TITLE}<\/title>"
-sorted_files_list=$(find ${EPUB_IMAGE_DIR} -name '*.jpg' | sort)
+sorted_files_list=$(find ${EPUB_IMAGE_DIR} -maxdepth 1 -name "*.${IMAGE_EXTENSION}" | sort)
 for file in ${sorted_files_list}; do
   image_file=$(basename "${file}")
   page_number_string=$(echo ${image_file} | grep -o '[0-9]*')
@@ -42,9 +43,9 @@ for file in ${sorted_files_list}; do
       # content.opfにページ情報追加
       # itemタグ追加
       search_string_item="<item id\=\"page${previous_number}\""
-      item_jpg_string="\t\t<item id\=\"image${page_number_string}\" href\=\"Images\/page${page_number_string}.jpg\" media-type\=\"image\/jpeg\"\/\>"
+      item_file_string="\t\t<item id\=\"image${page_number_string}\" href\=\"Images\/page${page_number_string}."${IMAGE_EXTENSION}"\" media-type\=\"image\/${IMAGE_EXTENSION_FOR_MEDIATYPE}\"\/\>"
       item_xhtml_string="\t\t<item id\=\"page${page_number_string}\" href\=\"Text\/page${page_number_string}.xhtml\" media-type\=\"application\/xhtml\+xml\"\/\>"
-      sed -i -e "/${search_string_item}/a \\${item_jpg_string}\n${item_xhtml_string}" ${OEBPS_DIR}/content.opf
+      sed -i -e "/${search_string_item}/a \\${item_file_string}\n${item_xhtml_string}" ${OEBPS_DIR}/content.opf
 
       # itemrefタグ追加
       search_string_itemref="<itemref idref\=\"page${previous_number}\" \/>"
@@ -58,7 +59,7 @@ for file in ${sorted_files_list}; do
 
     sed -i -e "s/<title>*.*/${book_title_string}/" ${target_page_xhtml_file}
 
-    sed -i -e "s/\[PAGE_JPG\]/${image_file}/" ${target_page_xhtml_file}
+    sed -i -e "s/\[PAGE_IMAGE\]/${image_file}/" ${target_page_xhtml_file}
     sed -i -e "s/\[EPUB_PAGE_WIDTH\]/${EPUB_PAGE_WIDTH}/" ${target_page_xhtml_file}
     sed -i -e "s/\[EPUB_PAGE_HEIGHT\]/${EPUB_PAGE_HEIGHT}/" ${target_page_xhtml_file}
   fi
@@ -69,6 +70,7 @@ target_cover_xhtml_file=${EPUB_TEXT_DIR}/cover.xhtml
 sed -i -e "s/<title>*.*/${book_title_string}/" ${target_cover_xhtml_file}
 sed -i -e "s/\[EPUB_PAGE_WIDTH\]/${EPUB_PAGE_WIDTH}/" ${target_cover_xhtml_file}
 sed -i -e "s/\[EPUB_PAGE_HEIGHT\]/${EPUB_PAGE_HEIGHT}/" ${target_cover_xhtml_file}
+sed -i -e "s/\[IMAGE_EXTENSION\]/${IMAGE_EXTENSION}/g" ${target_cover_xhtml_file}
 
 sed -i -e "s/<title>*.*/${book_title_string}/" ${EPUB_TEXT_DIR}/nav.xhtml
 
