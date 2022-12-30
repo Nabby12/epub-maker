@@ -4,7 +4,7 @@
 
 一連の画像ファイルをepub3.0に自動変換するスクリプト
 
-## Required tools
+## Required
 
 ```sh
 # 必要ツールをインストール
