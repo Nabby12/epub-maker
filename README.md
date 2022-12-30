@@ -4,6 +4,15 @@
 
 一連の画像ファイルをepub3.0に自動変換するスクリプト
 
+## Required tools
+
+```sh
+# 必要ツールをインストール
+brew install peco
+brew install jpegoptim
+brew install pngquant
+```
+
 ## How to use
 
 - `./assets` フォルダを作成し、フォルダ内に画像を用意
