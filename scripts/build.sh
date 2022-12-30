@@ -77,7 +77,7 @@ echo -e "${start_yellow}==========> generating done.${end_yellow}"
 echo -e "\n"
 echo -e "${start_yellow}==========> exporting epub file...${end_yellow}"
 ## epubファイル出力フォルダを生成
-rm -rf ${OUTPUT_DIR}
+rm -f "${OUTPUT_DIR}/${BOOK_TITLE}.epub"
 mkdir -p ${OUTPUT_DIR}
 
 ## epub生成
