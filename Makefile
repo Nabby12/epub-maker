@@ -9,3 +9,7 @@ check:
 # envファイルの値を設定
 set-env:
 	./scripts/set-env.sh
+
+# 素材画像や生成物を削除
+clean:
+	./scripts/clean.sh

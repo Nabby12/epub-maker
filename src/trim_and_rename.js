@@ -9,7 +9,6 @@ dotenvExpand.expand(myEnv)
 const assetsDir = process.env.ASSET_DIR
 const outputsDir = process.env.EPUB_IMAGE_DIR
 const imageExtension = process.env.IMAGE_EXTENSION
-const bookTitle = process.env.BOOK_TITLE
 
 const stdout = execSync(`ls ${assetsDir}`)
 const fileList = stdout.toString().split('\n')

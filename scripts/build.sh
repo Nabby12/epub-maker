@@ -41,8 +41,8 @@ echo -e "\n"
 echo -e "${start_yellow}==========> processing images...${end_yellow}"
 node src/trim_and_rename.js
 # 元の画像を別フォルダに退避
-mkdir -p "${ASSET_DIR}/${BOOK_TITLE}"
-find ${ASSET_DIR} -maxdepth 1 -name "*.${IMAGE_EXTENSION}" | xargs -I{} mv -f {} "${ASSET_DIR}/${BOOK_TITLE}/"
+mkdir -p "${ASSET_DIR}/${BOOK_TITLE_DIRECTORY}"
+find ${ASSET_DIR} -maxdepth 1 -name "*.${IMAGE_EXTENSION}" | xargs -I{} mv -f {} "${ASSET_DIR}/${BOOK_TITLE_DIRECTORY}/"
 echo -e "${start_yellow}==========> processing done.${end_yellow}"
 
 # ページ生成
