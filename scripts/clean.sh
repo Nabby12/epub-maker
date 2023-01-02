@@ -30,5 +30,5 @@ else
   rm -f "${output_parent_dir}/$(echo ${target} | sed 's/_/ /g').epub"
 fi
 
-echo -e "\n"
+echo ""
 echo -e "${start_green}cleaning '${target}' resources successfully finished.${end_green}"
