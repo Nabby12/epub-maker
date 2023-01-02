@@ -29,11 +29,6 @@ fileList.forEach((data) => {
     const output = `${outputsDir}/${outputFileName}`
 
     sharp(input)
-      .resize({
-        width,
-        height,
-        fit: 'outside',
-      })
       .extract({
         left,
         top,

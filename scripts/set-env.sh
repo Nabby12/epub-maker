@@ -34,13 +34,13 @@ input_publisher=${input_publisher:-$PUBLISHER}
 # トリム位置を設定
 read -p "TRIM_LEFT [${TRIM_LEFT} (0/0)]: " input_trim_left
 input_trim_left=${input_trim_left:-$TRIM_LEFT}
-read -p "TRIM_TOP [${TRIM_TOP} (226/0)]: " input_trim_top
+read -p "TRIM_TOP [${TRIM_TOP} (227/0)]: " input_trim_top
 input_trim_top=${input_trim_top:-$TRIM_TOP}
 
 # トリミングサイズを設定
 read -p "IMAGE_WIDTH [${IMAGE_WIDTH} (1080/580)]: " input_image_width
 input_image_width=${input_image_width:-$IMAGE_WIDTH}
-read -p "IMAGE_HEIGHT [${IMAGE_HEIGHT} (1707/917)]: " input_image_height
+read -p "IMAGE_HEIGHT [${IMAGE_HEIGHT} (1706/917)]: " input_image_height
 input_image_height=${input_image_height:-$IMAGE_HEIGHT}
 
 # 入力値を確認
