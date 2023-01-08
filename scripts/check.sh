@@ -2,10 +2,8 @@
 
 set -e
 
-start_green="\033[0;32m"
-end_green="\033[0m"
-start_red="\033[0;31m"
-end_red="\033[0m"
+source ./scripts/util.sh
+
 error_log="${start_red}ERROR: ${end_red}"
 
 ASSET_DIR="./assets"

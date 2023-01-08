@@ -3,13 +3,7 @@
 set -e
 
 source ./.env
-
-start_yellow_bold="\033[1;33m"
-end_yellow_bold="\033[0m"
-start_green="\033[0;32m"
-end_green="\033[0m"
-start_red="\033[0;31m"
-end_red="\033[0m"
+source ./scripts/util.sh
 
 # リサイズ値を設定
 echo ""
