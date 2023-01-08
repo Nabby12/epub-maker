@@ -3,9 +3,7 @@
 set -e
 
 source ./.env
-
-start_green="\033[0;32m"
-end_green="\033[0m"
+source ./scripts/util.sh
 
 selected_all="all"
 target=$(echo -e "${selected_all}\n$(ls ${ASSET_DIR})" | peco)

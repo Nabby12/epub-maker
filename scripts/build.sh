@@ -3,11 +3,7 @@
 set -e
 
 source ./.env
-
-start_yellow="\033[0;33m"
-end_yellow="\033[0m"
-start_green="\033[0;32m"
-end_green="\033[0m"
+source ./scripts/util.sh
 
 # 対象のファイルを一部表示
 echo ""
