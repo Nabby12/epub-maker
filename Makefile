@@ -13,3 +13,9 @@ set-env:
 # 素材画像や生成物を削除
 clean:
 	./scripts/clean.sh
+
+# その他コマンド
+
+# 画像リサイズ
+resize:
+	./scripts/resize.sh
