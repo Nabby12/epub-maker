@@ -10,7 +10,7 @@ const assetsDir = process.env.ASSET_DIR
 const outputsDir = process.env.EPUB_IMAGE_DIR
 const imageExtension = process.env.IMAGE_EXTENSION
 
-const stdout = execSync(`ls ${assetsDir}`)
+const stdout = execSync(`ls ${assetsDir} -tr`)
 const fileList = stdout.toString().split('\n')
 
 const startNumber = 1
