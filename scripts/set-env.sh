@@ -81,6 +81,28 @@ else
   input_image_height=${IMAGE_HEIGHT}
 fi
 
+input_cover_trim_left=""
+input_cover_trim_top=""
+input_cover_image_width=""
+input_cover_image_height=""
+if [ "$COVER_TRIM_FLAG" == "true" ]; then
+  echo ""
+  echo -e "${start_yellow_bold}Setting cover triming values.${end_yellow_bold}"
+  echo -e "${start_yellow_bold}=========================-===${end_yellow_bold}"
+
+  # 表紙のトリム位置を設定
+  read -p "COVER_TRIM_LEFT [${COVER_TRIM_LEFT}]: " input_cover_trim_left
+  input_cover_trim_left=${input_cover_trim_left:-$COVER_TRIM_LEFT}
+  read -p "COVER_TRIM_TOP [${COVER_TRIM_TOP}]: " input_cover_trim_top
+  input_cover_trim_top=${input_cover_trim_top:-$COVER_TRIM_TOP}
+
+  # 表紙のトリミングサイズを設定
+  read -p "COVER_IMAGE_WIDTH [${COVER_IMAGE_WIDTH}]: " input_cover_image_width
+  input_cover_image_width=${input_cover_image_width:-$COVER_IMAGE_WIDTH}
+  read -p "COVER_IMAGE_HEIGHT [${COVER_IMAGE_HEIGHT}]: " input_cover_image_height
+  input_cover_image_height=${input_cover_image_height:-$COVER_IMAGE_HEIGHT}
+fi
+
 # 入力値を確認
 echo ""
 echo -e "${start_yellow_bold}Show config.${end_yellow_bold}"
@@ -94,6 +116,16 @@ echo -e "TRIM_LEFT: ${start_green}${input_trim_left}${end_green}"
 echo -e "TRIM_TOP: ${start_green}${input_trim_top}${end_green}"
 echo -e "IMAGE_WIDTH: ${start_green}${input_image_width}${end_green}"
 echo -e "IMAGE_HEIGHT: ${start_green}${input_image_height}${end_green}"
+
+echo -e "COVER_TRIM_FLAG: ${start_green}${COVER_TRIM_FLAG}${end_green}"
+# 表紙のトリミングをする時のみ出力
+if [ "$COVER_TRIM_FLAG" == "true" ]; then
+  echo -e "COVER_TRIM_LEFT: ${start_green}${input_cover_trim_left}${end_green}"
+  echo -e "COVER_TRIM_TOP: ${start_green}${input_cover_trim_top}${end_green}"
+  echo -e "COVER_IMAGE_WIDTH: ${start_green}${input_cover_image_width}${end_green}"
+  echo -e "COVER_IMAGE_HEIGHT: ${start_green}${input_cover_image_height}${end_green}"
+fi
+
 echo ""
 
 read -p "Is input value ok? [y/N] " answer
@@ -112,6 +144,10 @@ sed -i -e "s/^TRIM_LEFT\=\s*.*/TRIM_LEFT\=${input_trim_left}/" .env
 sed -i -e "s/^TRIM_TOP\=\s*.*/TRIM_TOP\=${input_trim_top}/" .env
 sed -i -e "s/^IMAGE_WIDTH\=\s*.*/IMAGE_WIDTH\=${input_image_width}/" .env
 sed -i -e "s/^IMAGE_HEIGHT\=\s*.*/IMAGE_HEIGHT\=${input_image_height}/" .env
+sed -i -e "s/^COVER_TRIM_LEFT\=\s*.*/COVER_TRIM_LEFT\=${input_cover_trim_left}/" .env
+sed -i -e "s/^COVER_TRIM_TOP\=\s*.*/COVER_TRIM_TOP\=${input_cover_trim_top}/" .env
+sed -i -e "s/^COVER_IMAGE_WIDTH\=\s*.*/COVER_IMAGE_WIDTH\=${input_cover_image_width}/" .env
+sed -i -e "s/^COVER_IMAGE_HEIGHT\=\s*.*/COVER_IMAGE_HEIGHT\=${input_cover_image_height}/" .env
 
 echo ""
 echo -e "${start_green}setting values successfully finished.${end_green}"
