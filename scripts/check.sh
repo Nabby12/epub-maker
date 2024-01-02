@@ -26,7 +26,7 @@ if [ "$image_extension" != "$extension_jpg" ] && [ "$image_extension" != "$exten
 fi
 
 # 表紙ファイルの他に少なくとも1枚の画像があるかどうかを確認
-page_image_count=$(ls -la ${ASSET_DIR} | grep .${image_extension} | grep -vE ${cover_image_name} | wc -l)
+page_image_count=$(\ls -la ${ASSET_DIR} | grep .${image_extension} | grep -vE ${cover_image_name} | wc -l)
 if [ $page_image_count = 0 ]; then
   echo -n -e ${error_log}
   echo -e "${start_red}image files are not found except for '${cover_image_name}'.${end_red}\nplease store the image files (${image_extension}) at least 1."

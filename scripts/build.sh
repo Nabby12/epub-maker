@@ -9,7 +9,7 @@ source ./scripts/util.sh
 echo ""
 echo -e "${start_yellow}==========> target files...${end_yellow}"
 
-ls -la ${ASSET_DIR} | head -10 | xargs -I{} echo {} && echo -e "...\n"
+\ls -la ${ASSET_DIR} | head -10 | xargs -I{} echo {} && echo -e "...\n"
 
 # 必要ファイル生成
 echo ""

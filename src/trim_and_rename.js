@@ -10,7 +10,7 @@ const assetsDir = process.env.ASSET_DIR
 const outputsDir = process.env.EPUB_IMAGE_DIR
 const imageExtension = process.env.IMAGE_EXTENSION
 
-const stdout = execSync(`ls ${assetsDir} -A`)
+const stdout = execSync(`\\ls ${assetsDir} -A`)
 const fileList = stdout.toString().split('\n')
 
 const startNumber = 1
@@ -25,30 +25,48 @@ const coverTop = parseInt(process.env.COVER_TRIM_TOP, 10)
 const coverWidth = parseInt(process.env.COVER_IMAGE_WIDTH, 10)
 const coverHeight = parseInt(process.env.COVER_IMAGE_HEIGHT, 10)
 
-const imageExtractor = function(input, output, left, top, width, height, outputFileName) {
+const imageExtractor = function (input, output, left, top, width, height, outputFileName) {
   sharp(input)
-  .extract({
-    left,
-    top,
-    width,
-    height,
-  })
-  .toFile(output)
-  .then(() => {
-    console.log(`triming '${outputFileName}' succeeded.`)
-  })
+    .extract({
+      left,
+      top,
+      width,
+      height,
+    })
+    .toFile(output)
+    .then(() => {
+      console.log(`triming '${outputFileName}' succeeded.`)
+    })
+  console.log(output)
+}
+
+const imageResizer = function (input, output, width, height, fileName) {
+  sharp(input)
+    .resize({
+      width,
+      height,
+      fit: 'fill',
+    })
+    .toFile(output)
+    .then(() => {
+      console.log(`resizing '${fileName}' succeeded.`)
+    })
+  console.log(output)
 }
 
 fileList.forEach((data) => {
+  const input = `${assetsDir}/${data}`
   if (data.endsWith(`cover.${imageExtension}`) && process.env.COVER_TRIM_FLAG) {
-    const input = `${assetsDir}/${data}`
     const outputCoverName = `cover.${imageExtension}`
     const output = `${outputsDir}/${outputCoverName}`
 
     imageExtractor(input, output, coverLeft, coverTop, coverWidth, coverHeight, outputCoverName)
-
-  } else if (data.endsWith(`.${imageExtension}`) && !data.endsWith(`cover.${imageExtension}`)) {
-    const input = `${assetsDir}/${data}`
+    imageResizer(input, output, width, height, data)
+  } else if (
+    data.endsWith(`.${imageExtension}`) &&
+    !data.endsWith(`cover.${imageExtension}`) &&
+    !data.startsWith(`page`)
+  ) {
     const targetNumber = ('0000' + (startNumber + count)).slice(-4)
     const outputFileName = `page${targetNumber}.${imageExtension}`
     const output = `${outputsDir}/${outputFileName}`
@@ -56,6 +74,10 @@ fileList.forEach((data) => {
     imageExtractor(input, output, left, top, width, height, outputFileName)
 
     count++
+  } else if (data.startsWith(`page`)) {
+    // pageで始まるファイルはすでにトリミング済みなので、リサイズのみ実行して出力フォルダに保存
+    const output = `${outputsDir}/${data}`
+    imageResizer(input, output, width, height, data)
   }
 })
 

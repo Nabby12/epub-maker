@@ -6,7 +6,7 @@ source ./.env
 source ./scripts/util.sh
 
 selected_all="all"
-target=$(echo -e "${selected_all}\n$(ls ${ASSET_DIR})" | peco)
+target=$(echo -e "${selected_all}\n$(\ls ${ASSET_DIR})" | peco)
 
 assets_parent_dir=${ASSET_DIR}
 build_parent_dir=$(echo ${BUILD_DIR%%/*})

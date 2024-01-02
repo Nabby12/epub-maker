@@ -19,3 +19,7 @@ clean:
 # 画像リサイズ
 resize:
 	./scripts/resize.sh
+
+# 画像トリミング, リサイズ
+trim-and-resize:
+	node ./src/trim_and_rename.js
