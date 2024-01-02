@@ -11,7 +11,7 @@ const outputsDir = `${assetsDir}/resized/${getCurrentDateString()}`
 const makedirStdout = execSync(`mkdir -p ${outputsDir}`)
 console.log(makedirStdout)
 
-const stdout = execSync(`ls ${assetsDir}`)
+const stdout = execSync(`\\ls ${assetsDir}`)
 const fileList = stdout.toString().split('\n')
 
 const resizeWidth = parseInt(process.argv[2], 10)
