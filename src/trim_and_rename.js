@@ -13,7 +13,9 @@ const imageExtension = process.env.IMAGE_EXTENSION
 const stdout = execSync(`\\ls ${assetsDir} -A`)
 const fileList = stdout.toString().split('\n')
 
-const startNumber = 1
+// トリミング済みのファイル数から開始ページ数を取得
+const pageFileCount = execSync(`\\ls -A ${assetsDir} | grep -E '^page[0-9]{4}\\.*' | wc -l`, { encoding: 'utf8' })
+const startNumber = parseInt(pageFileCount.trim(), 10) + 1
 let count = 0
 
 const left = parseInt(process.env.TRIM_LEFT, 10)
@@ -54,14 +56,29 @@ const imageResizer = function (input, output, width, height, fileName) {
   console.log(output)
 }
 
+const imageModifier = function (input, output, extractParam, resizeParam, outputFileName) {
+  sharp(input)
+    .extract({ left: extractParam.left, top: extractParam.top, width: extractParam.width, height: extractParam.height })
+    .resize({
+      width: resizeParam.width,
+      height: resizeParam.height,
+      fit: 'fill',
+    })
+    .toFile(output)
+    .then(() => {
+      console.log(`triming and resizing '${outputFileName}' succeeded.`)
+    })
+}
+
 fileList.forEach((data) => {
   const input = `${assetsDir}/${data}`
   if (data.endsWith(`cover.${imageExtension}`) && process.env.COVER_TRIM_FLAG) {
     const outputCoverName = `cover.${imageExtension}`
     const output = `${outputsDir}/${outputCoverName}`
 
-    imageExtractor(input, output, coverLeft, coverTop, coverWidth, coverHeight, outputCoverName)
-    imageResizer(input, output, width, height, data)
+    const extractParam = { left: coverLeft, top: coverTop, width: coverWidth, height: coverHeight }
+    const resizeParam = { width, height }
+    imageModifier(input, output, extractParam, resizeParam, outputCoverName)
   } else if (
     data.endsWith(`.${imageExtension}`) &&
     !data.endsWith(`cover.${imageExtension}`) &&
@@ -71,7 +88,14 @@ fileList.forEach((data) => {
     const outputFileName = `page${targetNumber}.${imageExtension}`
     const output = `${outputsDir}/${outputFileName}`
 
-    imageExtractor(input, output, left, top, width, height, outputFileName)
+    if (data === 'xxxx') {
+      // 一部のファイルにのみ修正を加えたい場合は直接ファイル名指定で修正を実施
+      const extractParam = { left: 5, top: 344, width: 1593, height: 2277 }
+      const resizeParam = { width, height }
+      imageModifier(input, output, extractParam, resizeParam, outputFileName)
+    } else {
+      imageExtractor(input, output, left, top, width, height, outputFileName)
+    }
 
     count++
   } else if (data.startsWith(`page`)) {
